@@ -21,6 +21,11 @@ export default function Login() {
     password: "",
   });
 
+  useEffect(()=>{
+    if(localStorage.getItem("chat-app-user")){
+      navigate("/");
+    }
+  },[]);
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -28,13 +33,13 @@ export default function Login() {
 
   const handleValidation = () => {
     const { password, username} = values;
-    if (username.length ==="") {
+    if (username === "") {
       toast.error(
         "Username is required.",
         toastOptions
       );
       return false;
-    } else if (password.length === "") {
+    } else if (password === "") {
       toast.error(
         "Password is required.",
         toastOptions
