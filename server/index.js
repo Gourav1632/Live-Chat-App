@@ -2,10 +2,9 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import env from "dotenv";
-import userRoutes from "./routes/userRoute.js"
-import messageRoute from "./routes/messagesRoute.js"
-
-;
+import userRoutes from "./routes/userRoute.js";
+import messageRoute from "./routes/messagesRoute.js";
+import {Server} from "socket.io";
 
 const app = express();
 
@@ -30,6 +29,30 @@ const connectDB = async () => {
   }
 
 connectDB();
-app.listen(process.env.PORT,()=>{
+const server = app.listen(process.env.PORT,()=>{
     console.log(`Server running on port: ${process.env.PORT}`);
 })
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", 
+    credentials: true,
+  },
+});
+
+global.onlineUsers = new Map();
+
+io.on("connection", (socket) => {
+  global.chatSocket = socket;
+
+  socket.on("add-user", (userId) => {
+    onlineUsers.set(userId, socket.id);
+  });
+
+  socket.on("send-msg", (data) => {
+    const sendUserSocket = onlineUsers.get(data.to);
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit("msg-recieve", data.message);
+    }
+  });
+});
