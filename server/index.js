@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import env from "dotenv";
-import router from "./routes/userRoute.js"
+import userRoutes from "./routes/userRoute.js"
+import messageRoute from "./routes/messagesRoute.js"
 
 ;
 
@@ -15,7 +16,8 @@ app.use(express.json());
 
 app.use(cors())
 
-app.use("/api/auth",router);
+app.use("/api/auth",userRoutes);
+app.use("/api/messages",messageRoute)
 
 const connectDB = async () => {
     try {
