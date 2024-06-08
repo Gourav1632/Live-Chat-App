@@ -7,6 +7,7 @@ import { sendMessageRoute } from '../utils/APIRoutes';
 import { recieveMessageRoute } from '../utils/APIRoutes';
 import axios from 'axios';
 import {v4 as uuidv4} from "uuid"
+import Back from './Back';
 
 export default function ChatContainer(props) {
 
@@ -59,17 +60,21 @@ export default function ChatContainer(props) {
   return (
     <Container>
         <div className='chat-header'>
-            <div className="user-details">
-                <div className="avatar"> 
-                    <img src={`data:image/svg+xml;base64,${props.currentChat.avatarImage}`} alt="avatar" />
-                </div>
-                <div className="username">
-                    <h3>{props.currentChat.username}</h3>
+            <div className='left'>
+                <Back />
+                <div className="user-details">
+                    <div className="avatar"> 
+                        <img src={props.currentChat.avatarImage} alt="avatar" />
+                    </div>
+                    <div className="username">
+                        <h3>{props.currentChat.username}</h3>
+                    </div>
                 </div>
             </div>
-            <Logout />
+            <div className='right'>
+                <Logout className="logout" />
+            </div>
         </div>
-        {/* <Messages /> */}
         <div className="chat-messages">
             {
                 messages.map((message,index)=>{
@@ -90,12 +95,14 @@ export default function ChatContainer(props) {
   )
 }
 
+
+
 const Container = styled.div`
     display: grid;
-    grid-template-rows: 10% 78% 12% ;
+    grid-template-rows: 10% 82% 8% ;
     gap: 0.1rem;
     overflow: hidden;
-    padding-top: 1rem;
+    background-image: url("https://www.transparenttextures.com/patterns/cartographer.png");
     @media screen and  (min-width: 720px) and (max-width:1080px){
         grid-auto-rows: 15% 70% 15%;
     }
@@ -104,20 +111,30 @@ const Container = styled.div`
         justify-content: space-between;
         align-items: center;
         padding: 0 2rem;
+        color: white;
+        border-bottom: 1px solid #686D76;
+        background-color: #181818;
+        .left{
+            display: flex;
+        }
         .user-details{
             display: flex;
             align-items: center;
             gap: 1rem;
+            justify-content: center;
             .avatar{
+                height: 2.5rem;
+                width: 2.5rem;
+                border-radius: 50%;
+                overflow: hidden;
                 img{
-                   height : 3rem ;
+                   height : 2.5rem ;
                 }
             }
-            .username{
-                h3{
-                    color: white;
-                }
-            }
+        }
+        .logout{
+
+            align-items: flex-end;
         }
 
     }
@@ -139,26 +156,31 @@ const Container = styled.div`
             display: flex;
             align-items: center;
             .content{
+
                 max-width: 40%;
                 overflow-wrap: break-word;
                 padding: 1rem;
-                font-size: 1.1rem;
-                border-radius: 1rem;
-                color: #d1d1d1;
+                font-size: 1.8rem;
+                /* border-radius: 1rem; */
+                color: white;
 
             }
         }
         .sended{
             justify-content: flex-end;
             .content{
-                background-color: #4f04ff21;
-                
+                border-radius: 1rem 0 1rem 1rem;
+                background-color: #00baba;
+                background: linear-gradient(45deg,#037ADE, #03E5B7);
             }
+            
         }
         .recieved{
            justify-content : flex-start ;
            .content{
-            background-color: #9900ff20;
+            color: black;
+            border-radius: 0rem 1rem 1rem 1rem;
+            background-color: white;
            }
         }
     }

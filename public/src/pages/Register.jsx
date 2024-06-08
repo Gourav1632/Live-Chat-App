@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
-import Logo from "../assets/logo.svg";
+import Logo from "../assets/logo.png";
+import Leaf from "../assets/leaf.png"
+import Background from "../assets/background.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerRoute } from "../utils/APIRoutes";
@@ -86,10 +88,13 @@ export default function Register() {
   return (
     <>
       <FormContainer>
+        <div className="formContainer">
+
+        <img src={Leaf} alt=""  className="leaf"/>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
           <div className="brand">
-            <img src={Logo} alt="logo" />
-            <h1>snappy</h1>
+            <img src={Logo} alt="logo"  className="logo"/>
+            <h1>EMBER</h1>
           </div>
           <input
             type="text"
@@ -115,11 +120,12 @@ export default function Register() {
             name="confirmPassword"
             onChange={(e) => handleChange(e)}
           />
-          <button type="submit">Create User</button>
+          <button type="submit">Sign Up</button>
           <span>
             Already have an account ? <Link to="/login">Login</Link>
           </span>
         </form>
+        </div>
       </FormContainer>
       <ToastContainer />
     </>
@@ -129,68 +135,68 @@ export default function Register() {
 const FormContainer = styled.div`
   height: 100vh;
   width: 100vw;
+  background-image: url(${Background});
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
   align-items: center;
-  background-color: #131324;
-  .brand {
+  justify-content: center;
+  .formContainer{
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    justify-content: center;
-    img {
-      height: 5rem;
-    }
-    h1 {
-      color: white;
-      text-transform: uppercase;
-    }
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    background-color: #00000076;
-    border-radius: 2rem;
-    padding: 3rem 5rem;
-  }
-  input {
-    background-color: transparent;
+    background-color: white;
+    height: 40rem;
+    width: 70rem;
     padding: 1rem;
-    border: 0.1rem solid #4e0eff;
-    border-radius: 0.4rem;
-    color: white;
-    width: 100%;
-    font-size: 1rem;
-    &:focus {
-      border: 0.1rem solid #997af0;
-      outline: none;
+    border-radius: 1rem;
+    .leaf{
+      height: 38rem;
+      border-radius: 1rem;
     }
-  }
-  button {
-    background-color: #4e0eff;
-    color: white;
-    padding: 1rem 2rem;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 0.4rem;
-    font-size: 1rem;
-    text-transform: uppercase;
-    &:hover {
-      background-color: #4e0eff;
-    }
-  }
-  span {
-    color: white;
-    text-transform: uppercase;
-    a {
-      color: #4e0eff;
-      text-decoration: none;
-      font-weight: bold;
+    form{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-right: 10rem;
+      .brand{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        .logo{
+          height: 4rem;
+        }
+      }
+      input{
+        padding: .5rem .8rem;
+        font-size: 1.2rem;
+        border: 0.2rem solid #DFECFD;
+      }
+      button {
+        background-color: #86A0D3;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 0.4rem;
+        font-size: 1rem;
+        text-transform: uppercase;
+        &:hover {
+          background-color: #0F114C;
+        }
+      }
+      span {
+        text-transform: uppercase;
+        a {
+          color: #0F114C;
+          text-decoration: none;
+          font-weight: bold;
+        }
+      
+      }
+
     }
   }
 `;

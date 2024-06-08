@@ -7,6 +7,9 @@ import messageRoute from "./routes/messagesRoute.js";
 import {Server} from "socket.io";
 
 const app = express();
+app.use(express.json({ limit: '10mb' })); // Adjust the limit as needed
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
 
 env.config();
 
@@ -17,6 +20,7 @@ app.use(cors())
 
 app.use("/api/auth",userRoutes);
 app.use("/api/messages",messageRoute)
+
 
 const connectDB = async () => {
     try {
@@ -55,4 +59,5 @@ io.on("connection", (socket) => {
       socket.to(sendUserSocket).emit("msg-recieve", data.message);
     }
   });
+  
 });
