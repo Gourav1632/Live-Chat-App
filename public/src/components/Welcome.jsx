@@ -9,20 +9,31 @@ import { acceptRequestRoute, getRecievedRequestsRoute, rejectRequestRoute } from
 function Welcome(props) {
   const [receivedRequests, setReceivedRequests] = useState([]);
 
+
+
   async function getReceivedRequests() {
     const response = await axios.get(`${getRecievedRequestsRoute}/${props.currentUser._id}`);
     setReceivedRequests(response.data);
   }
   useEffect(() => {
+    if(props.socket.current){
+      props.socket.current.on("recieve-request",(requestId)=>{
+          getReceivedRequests(); 
+      })
+    }
     getReceivedRequests();
-  }, [props.currentUser._id]);
+  }, [props.socket, props.currentUser._id]);
 
   async function acceptRequest(contactId){
     try{
       await axios.post(`${acceptRequestRoute}/${props.currentUser._id}`,{contactId});
       console.log("Successfully accepted request.");
-      setReceivedRequests(receivedRequests.filter(request => request._id !== contactId)); // Remove the accepted request from the list
+      setReceivedRequests(receivedRequests.filter(request => request._id !== contactId));
       props.updateContacts();
+      props.socket.current.emit("accept-request",{
+        to: contactId,
+        from: props.currentUser._id
+    })    
     }catch(err){
       console.log("Failed to accept request: ",err);
     }
@@ -58,21 +69,24 @@ function Welcome(props) {
         <div className='logout'>
           <Logout />
         </div>
-          <h1>Friend Requests</h1>
+          <h1>Notifications</h1>
             {
             receivedRequests.map((contact,index) => (
-              <div key={index} className='contact'>
-                <div className='avatar'>
-                  <img src={contact.avatarImage} alt="avatar" />
+              
+                <div key={contact._id} className='contact'>
+                  <div className="user-details">
+                    <div className='avatar'>
+                      <img src={contact.avatarImage} alt="avatar" />
+                    </div>
+                    <div className="username">
+                      <h3>{contact.username}</h3>
+                    </div>
+                  </div>
+                  <div className='request'>
+                    <button className='accept' onClick={()=>{acceptRequest(contact._id)}}>Accept</button>
+                    <button className='ignore' onClick={()=>{rejectRequest(contact._id)}}>Ignore</button>
+                  </div>
                 </div>
-                <div className="username">
-                  <h3>{contact.username}</h3>
-                </div>
-                <div className='send-request'>
-                  <button onClick={()=>{acceptRequest(contact._id)}}>Accept</button>
-                  <button onClick={()=>{rejectRequest(contact._id)}}>Reject</button>
-                </div>
-              </div>
             ))
             }
             </div>
@@ -94,7 +108,7 @@ const Container = styled.div`
     .logout {
       position: fixed;
       top: 2rem;
-      right: 2%;
+      right: 2rem;
       display: flex;
       align-items: center;
     }
@@ -130,9 +144,12 @@ const Container = styled.div`
     span {
       color: #037ADE;
     }
-    .contact {
+    .contact{
+      display: flex;
+      justify-content: space-between;
+      width: 93%;
+    .user-details{
           min-height: 5rem;
-          cursor: pointer;
           width: 93%;
           padding: 0.4rem;
           display: flex;
@@ -148,8 +165,37 @@ const Container = styled.div`
               height: 3rem;
               }
           }
+      }
+      .request{
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        .accept{
+          width: 6rem;
+          height: 3rem;
+          border-radius: 3rem;
+          border: none;
+          background-color: #7FFFD4	;
+          font-weight: bolder;
+          &:hover{
+          background-color: #097969;
+          }
         }
-  }
+        .ignore{
+          width: 6rem;
+          height: 3rem;
+          border-radius: 3rem;
+          border: none;
+          background-color: #646463;
+          color: white;
+          font-weight: bolder;
+          &:hover{
+          background-color: #3d3d3d;
+          }
+        }
+      }
+  }}
 `;
 
 

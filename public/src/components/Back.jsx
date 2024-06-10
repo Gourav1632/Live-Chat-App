@@ -5,13 +5,10 @@ import {useNavigate} from "react-router-dom";
 
 
 
-const Back = () => {
-    const navigate = useNavigate();
-    async function goBack(){
-      navigate(-2);
-    }
+const Back = (props) => {
+
   return (
-    <BackButton onClick={goBack}>
+    <BackButton onClick={props.onClick} >
       <FaArrowLeft style={{ marginRight: '8px' }} />
     </BackButton>
   );
@@ -23,7 +20,7 @@ const BackButton = styled.button`
   font-size: 20px;
   background: none;
   border: none;
-  color: inherit; /* Inherits the text color from the parent */
+  color: white;
   cursor: pointer;
   padding: 0;
   outline: none;

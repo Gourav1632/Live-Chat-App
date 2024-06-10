@@ -47,7 +47,22 @@ function Chat() {
       socket.current = io(host);
       socket.current.emit("add-user", currentUser._id)
     }
+  
   }, [currentUser]);
+
+  async function getUserContacts(){
+    const usrData = await axios.get(`${contactsRoute}/${currentUser._id}`)
+    setUserContacts(usrData.data);
+  }
+
+  useEffect(() => {
+    if(socket.current){
+      socket.current.on("request-accepted",(acceptor)=>{
+        getUserContacts();
+      });
+    }
+  }, [socket,currentUser]);
+
 
 
 
@@ -68,6 +83,7 @@ function Chat() {
   }, [currentUser])
 
   function handleChatChange(chat) {
+    setShowAddFriends(false);
     setCurrentChat(chat);
   }
   function handleAddFriends() {
@@ -92,13 +108,14 @@ function Chat() {
                   currentUser={currentUser}
                   changeChat={handleChatChange}
                   addFriends={handleAddFriends}
+                  socket={socket}
                 />
                 {showAddFriends ? (
-                  <AddFriends currentUser={currentUser} contacts={contacts}  />
+                  <AddFriends currentUser={currentUser} userContacts={userContacts} contacts={contacts} socket={socket} onBack={()=>{setShowAddFriends(false)}}/>
                 ) : isLoaded && currentChat === undefined ? (
-                  <Welcome currentUser={currentUser} updateContacts={updateContacts} />
+                  <Welcome currentUser={currentUser} updateContacts={updateContacts} socket={socket} />
                 ) : (
-                  <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
+                  <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} onBack={()=>{setCurrentChat(undefined)}}/>
                 )}
               </div>
 

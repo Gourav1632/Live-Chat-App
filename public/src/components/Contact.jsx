@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 import Logo from "../assets/logo.png";
 import Search from './Search'; // Import the Search component
@@ -6,16 +6,32 @@ import Search from './Search'; // Import the Search component
 function Contact(props) {
     const [currentSelected, setCurrentSelected] = useState(undefined);
     const [searchQuery, setSearchQuery] = useState('');
+    const [newMessageIds,setNewMessageIds] = useState([]);
 
     function changeCurrentChat(index, contact) {
         setSearchQuery('');
         setCurrentSelected(index);
         props.changeChat(contact);
+        setNewMessageIds((prev) => prev.filter(id => id !== contact._id));
     }
+
+
+    useEffect(()=>{
+      if(props.socket.current){
+          props.socket.current.on("recieve-new-message",(contactId)=>{
+              setNewMessageIds((prev) => [...prev, contactId]);
+            }
+          )
+      }
+  },[props.socket,currentSelected])
 
     const filteredContacts = props.userContacts.filter(contact =>
         contact.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    function hasNewMessage(contactId) {
+      return newMessageIds.includes(contactId);
+    }
 
     return (
         <>
@@ -31,7 +47,9 @@ function Contact(props) {
                         <div className="username">
                             <h2>{props.currentUser.username}</h2>
                         </div>
-                        <button onClick={props.addFriends}>Add Friend</button>
+                        <div className="add-friend">
+                          <button onClick={props.addFriends}>Add Friend</button>
+                        </div>
                     </div>
                     <div className='search'>
                         <Search setSearchQuery={setSearchQuery} />
@@ -59,6 +77,9 @@ function Contact(props) {
                                     </div>
                                     <div className="username">
                                         <h3>{contact.username}</h3>
+                                        {hasNewMessage(contact._id) && (
+                                            <div className="notify">New message</div>
+                                        )}
                                     </div>
                                 </div>
                             ))
@@ -92,6 +113,20 @@ const Container = styled.div`
       border-radius: 50%;
       img {
         height: 4rem;
+      }
+    }
+    .add-friend{
+      button{
+        width: 6rem;
+        height: 2rem;
+        border-radius: 3rem;
+        border: none;
+        background-color: #ffdf00;
+        color: black;
+        font-weight: bolder;
+        &:hover{
+        background-color: #9e8c1a;
+        }
       }
     }
     @media screen and (min-width: 720px) and (max-width: 1080px) {
@@ -130,6 +165,7 @@ const Container = styled.div`
       margin: 0.5rem 0rem;
     }
     .contact {
+      position: relative;
       min-height: 5rem;
       cursor: pointer;
       width: 93%;
@@ -149,6 +185,10 @@ const Container = styled.div`
         img {
           height: 3rem;
         }
+      }
+      .username{
+        display: flex;
+        flex-direction: column;
       }
     }
     .selected {

@@ -53,11 +53,32 @@ io.on("connection", (socket) => {
     onlineUsers.set(userId, socket.id);
   });
 
+  socket.on("isOnline", (userId) => {
+    const isOnline = onlineUsers.has(userId);
+    socket.emit("onlineStatus", { userId, isOnline });
+  });
+
   socket.on("send-msg", (data) => {
     const sendUserSocket = onlineUsers.get(data.to);
     if (sendUserSocket) {
       socket.to(sendUserSocket).emit("msg-recieve", data.message);
+      socket.to(sendUserSocket).emit("recieve-new-message", data.from);
     }
   });
+
+  socket.on("send-request", (data) => {
+    const sendUserSocket = onlineUsers.get(data.to);
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit("recieve-request", data.from);
+    }
+  });
+
+  socket.on("accept-request",(data)=>{
+    const sendUserSocket = onlineUsers.get(data.to);
+    console.log("request accepted of ",sendUserSocket);
+    if(sendUserSocket){
+      socket.to(sendUserSocket).emit("request-accepted",data.from);
+    }
+  })
   
 });
