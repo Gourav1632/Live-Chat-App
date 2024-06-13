@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
-import Logo from "../assets/logo.png";
-import Leaf from "../assets/leaf.png"
+import Logo from "../assets/chat.png";
+import LoginImg from "../assets/Login.svg"
 import Background from "../assets/background.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -83,16 +83,19 @@ export default function Register() {
       }
 
     }
-  };
+  }
+  function goToHome(){
+    navigate("/");
+  }
 
   return (
     <>
       <FormContainer>
         <div className="formContainer">
 
-        <img src={Leaf} alt=""  className="leaf"/>
+        <img src={LoginImg} alt=""  className="login-image"/>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
-          <div className="brand">
+          <div className="brand" onClick={goToHome}>
             <img src={Logo} alt="logo"  className="logo"/>
             <h1>EMBER</h1>
           </div>
@@ -135,7 +138,7 @@ export default function Register() {
 const FormContainer = styled.div`
   height: 100vh;
   width: 100vw;
-  background-image: url(${Background});
+  background-color: #181818;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,7 +153,7 @@ const FormContainer = styled.div`
     padding: 1rem;
     border-radius: 1rem;
 
-    .leaf {
+    .login-image {
       height: 38rem;
       border-radius: 1rem;
     }
@@ -208,15 +211,15 @@ const FormContainer = styled.div`
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1080px) {
     .formContainer {
       flex-direction: column;
       height: auto;
       width: 90%;
       padding: 2rem;
 
-      .leaf {
-        display: none;
+      .login-image {
+        height: 25rem;
       }
 
       form {
@@ -224,7 +227,6 @@ const FormContainer = styled.div`
         width: 100%;
 
         .brand {
-          flex-direction: column;
 
           .logo {
             height: 3rem;
@@ -255,8 +257,12 @@ const FormContainer = styled.div`
 
   @media (max-width: 480px) {
     .formContainer {
-      width: 100%;
+      width: 90%;
       padding: 1rem;
+
+      .login-image{
+        height: 20rem;
+      }
 
       form {
         gap: 0.5rem;
