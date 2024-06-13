@@ -11,6 +11,10 @@ import Logo from "../assets/logo.png";
 import Background from "../assets/background.jpg";
 import Search from '../components/Search';
 import AddFriends from '../components/AddFriends';
+import Notification from '../components/Notification';
+import Logout from '../components/Logout';
+import Back from '../components/Back';
+import Ellipsis from '../components/Ellipsis';
 
 function Chat() {
 
@@ -25,7 +29,10 @@ function Chat() {
   const [currentChat, setCurrentChat] = useState(undefined);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showAddFriends, setShowAddFriends] = useState(false);
-
+  const [displayMainWindow, setDisplayMainWindow] = useState("none");
+  const [showBackIcon, setShowBackIcon] = useState("none");
+  const [showNotificationIcon,setShowNotificationIcon] = useState("block");
+  const [gridRatio, setGridRatio] = useState("100% 0%");
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -85,14 +92,38 @@ function Chat() {
   function handleChatChange(chat) {
     setShowAddFriends(false);
     setCurrentChat(chat);
+    setGridRatio("0% 100%");
+    setDisplayMainWindow("block");
+    setShowNotificationIcon("none");
+    setShowBackIcon("block");
   }
   function handleAddFriends() {
     setShowAddFriends(true);
+    setGridRatio("0% 100%");
+    setDisplayMainWindow("block");
+    setShowNotificationIcon("none");
+    setShowBackIcon("block")
   }
   async function updateContacts() {
     const response = await axios.get(`${contactsRoute}/${currentUser._id}`);
     setUserContacts(response.data);
   }
+
+  function goToNotification() {
+    setCurrentChat(undefined);
+    setShowAddFriends(false);
+    setGridRatio("0% 100%");
+    setDisplayMainWindow("block");
+    setShowNotificationIcon("none");
+    setShowBackIcon("block")
+  }
+  function goToContacts(){
+    setGridRatio("100% 0%");
+    setDisplayMainWindow("none");
+    setShowNotificationIcon("block");
+    setShowBackIcon("none")
+  }
+
   return (
     <>
       {
@@ -100,7 +131,13 @@ function Chat() {
           <Container>
           </Container> :
           (
-            <Container>
+            <Container $showNotificationIcon={showNotificationIcon} $showBackIcon={showBackIcon} $displayMainWindow={displayMainWindow} $gridRatio={gridRatio}>
+            <div className='notification-bell'>
+              <Notification onClick={goToNotification} />
+            </div>
+            <div className="contact-icon">
+              <Back onClick={goToContacts}/>
+            </div>
               <div className="container">
                 <Contact
                   contacts={contacts}
@@ -110,6 +147,7 @@ function Chat() {
                   addFriends={handleAddFriends}
                   socket={socket}
                 />
+            <div className="main-window">
                 {showAddFriends ? (
                   <AddFriends currentUser={currentUser} userContacts={userContacts} contacts={contacts} socket={socket} onBack={()=>{setShowAddFriends(false)}}/>
                 ) : isLoaded && currentChat === undefined ? (
@@ -118,6 +156,7 @@ function Chat() {
                   <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} onBack={()=>{setCurrentChat(undefined)}}/>
                 )}
               </div>
+            </div>
 
             </Container>
           )
@@ -136,19 +175,74 @@ const Container = styled.div`
   gap: 1rem;
   align-items: center;
   background-color: #181818;
-  .container{
+
+  @keyframes popUp {
+    0% {
+      transform: scale(0);
+    }
+    80% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .notification-bell {
+    z-index: 1;
+    display: none;
+  }
+
+  .contact-icon {
+    display: none;
+  }
+
+  .container {
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: 30% 70%;
-    @media screen and  (min-width: 720px) and (max-width:1080px){
-      grid-template-columns: 35% 65%;
-    }
-    @media screen and  (min-width: 360px) and (max-width:480px){
-      grid-template-columns: 35% 65%;
+    transition: all 0.5s;
+
+    .main-window {
+      height: 100%;
+      width: 100%;
+      transition: all 0.5s;
     }
   }
 
+  @media screen and (min-width: 720px) and (max-width: 1080px) {
+    .container {
+      grid-template-columns: 50% 50%;
+    }
+  }
+
+  @media screen and (min-width: 360px) and (max-width: 480px) {
+    .container {
+      grid-template-columns: ${(props) => props.$gridRatio};
+      transition: all 0.5s;
+    }
+    .main-window {
+      display: ${(props) => props.$displayMainWindow};
+    }
+    .notification-bell {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      display: ${(props) => props.$showNotificationIcon};
+      animation: ${(props) => (props.$showNotificationIcon === "block" ? "popUp 0.5s" : "none")};
+      transition: all 0.5s;
+    }
+    .contact-icon {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      display: ${(props) => props.$showBackIcon};
+      animation: ${(props) => (props.$showBackIcon === "block" ? "popUp 0.5s" : "none")};
+      transition: all 0.5s;
+    }
+  }
 `;
 
-export default Chat
+
+export default Chat;

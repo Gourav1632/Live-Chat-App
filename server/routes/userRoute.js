@@ -1,5 +1,5 @@
 
-import {getAllUsers,setAvatar,login, register, getUserContacts,sendRequest,getSentRequests,getRecievedRequests,acceptRequest,rejectRequest} from "../controllers/userController.js"
+import {getAllUsers,setAvatar,login, register, getUserContacts,sendRequest,getSentRequests,getRecievedRequests,acceptRequest,rejectRequest,deleteUser} from "../controllers/userController.js"
 import express from "express";
 
 const router = express.Router();
@@ -14,5 +14,6 @@ router.get("/getSentRequests/:id",getSentRequests);
 router.get("/getRecievedRequests/:id",getRecievedRequests);
 router.post("/acceptrequest/:id",acceptRequest);
 router.post("/rejectrequest/:id",rejectRequest);
+router.delete("/deleteuser/:id",deleteUser);
 
 export default router

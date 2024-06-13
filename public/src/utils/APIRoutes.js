@@ -12,5 +12,6 @@ export const getCurrentUserRequestsRoute = `${host}/api/auth/getSentRequests`;
 export const getRecievedRequestsRoute = `${host}/api/auth/getRecievedRequests`;
 export const acceptRequestRoute = `${host}/api/auth/acceptrequest`;
 export const rejectRequestRoute = `${host}/api/auth/rejectrequest`;
+export const deleteuser = `${host}/api/auth/deleteuser`;
 
 

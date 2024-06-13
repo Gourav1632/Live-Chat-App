@@ -25,7 +25,7 @@ export default function Login() {
 
   useEffect(()=>{
     if(localStorage.getItem("chat-app-user")){
-      navigate("/");
+      navigate("/chat");
     }
   },[]);
 
@@ -109,11 +109,13 @@ export default function Login() {
 const FormContainer = styled.div`
   height: 100vh;
   width: 100vw;
-  background-image: url(${Background});
+  /* background-image: url(${Background}); */
+  background-color: #181818;
   display: flex;
   align-items: center;
   justify-content: center;
-  .formContainer{
+
+  .formContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -122,33 +124,39 @@ const FormContainer = styled.div`
     width: 70rem;
     padding: 1rem;
     border-radius: 1rem;
-    .leaf{
+
+    .leaf {
       height: 38rem;
       border-radius: 1rem;
     }
-    form{
+
+    form {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 1rem;
       margin-right: 10rem;
-      .brand{
+
+      .brand {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 1rem;
-        .logo{
+
+        .logo {
           height: 4rem;
         }
       }
-      input{
-        padding: .5rem .8rem;
+
+      input {
+        padding: 0.5rem 0.8rem;
         font-size: 1.2rem;
-        border: 0.2rem solid #DFECFD;
+        border: 0.2rem solid #dfecfd;
       }
+
       button {
-        background-color: #86A0D3;
+        background-color: #86a0d3;
         color: white;
         padding: 1rem 2rem;
         border: none;
@@ -157,20 +165,99 @@ const FormContainer = styled.div`
         border-radius: 0.4rem;
         font-size: 1rem;
         text-transform: uppercase;
+
         &:hover {
-          background-color: #0F114C;
+          background-color: #0f114c;
         }
       }
+
       span {
         text-transform: uppercase;
+
         a {
-          color: #0F114C;
+          color: #0f114c;
           text-decoration: none;
           font-weight: bold;
         }
-      
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .formContainer {
+      flex-direction: column;
+      height: auto;
+      width: 90%;
+      padding: 2rem;
+
+      .leaf {
+        display: none;
       }
 
+      form {
+        margin-right: 0;
+        width: 100%;
+
+        .brand {
+          flex-direction: column;
+
+          .logo {
+            height: 3rem;
+          }
+        }
+
+        input {
+          width: 100%;
+          font-size: 1rem;
+        }
+
+        button {
+          width: 100%;
+          padding: 1rem;
+          font-size: 1rem;
+        }
+
+        span {
+          text-align: center;
+
+          a {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .formContainer {
+      width: 100%;
+      padding: 1rem;
+
+      form {
+        gap: 0.5rem;
+
+        .brand {
+          gap: 0.5rem;
+
+          h1 {
+            font-size: 1.5rem;
+          }
+        }
+
+        input {
+          font-size: 0.9rem;
+        }
+
+        button {
+          font-size: 0.9rem;
+        }
+
+        span {
+          a {
+            font-size: 0.9rem;
+          }
+        }
+      }
     }
   }
 `;

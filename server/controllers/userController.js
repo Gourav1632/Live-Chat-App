@@ -210,6 +210,44 @@ const rejectRequest = async (req, res, next) => {
     }
 };
 
+const deleteUser = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Find users who have the user to be deleted in their contacts
+        const usersToUpdate = await User.find({ "contacts.userId": userId });
+
+        // Update contacts of these users
+        await Promise.all(usersToUpdate.map(async u => {
+            u.contacts = u.contacts.filter(c => !c.userId.equals(userId));
+            await u.save();
+        }));
+
+        // Remove sent and received requests involving the user
+        await User.updateMany(
+            { "sentRequests.userId": userId },
+            { $pull: { sentRequests: { userId } } }
+        );
+        await User.updateMany(
+            { "receivedRequests.userId": userId },
+            { $pull: { receivedRequests: { userId } } }
+        );
+
+        // Delete the user
+        await User.deleteOne({ _id: userId });
+
+        return res.json({ message: "User deleted successfully" });
+    } catch (err) {
+        next(err);
+    }
+};
+
+
 export {
     getAllUsers,
     setAvatar,
@@ -220,5 +258,6 @@ export {
     getSentRequests,
     getRecievedRequests,
     acceptRequest,
-    rejectRequest
+    rejectRequest,
+    deleteUser
 };
