@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ChatInput from './ChatInput';
 import { sendMessageRoute, recieveMessageRoute } from '../utils/APIRoutes';
 import axios from 'axios';
+import Back from './Back';
 
 export default function ChatContainer(props) {
     const [messages, setMessages] = useState([]);
@@ -31,10 +32,9 @@ export default function ChatContainer(props) {
             props.socket.current.emit("isOnline", props.currentChat._id);
             props.socket.current.on("onlineStatus", ({ userId, isOnline }) => {
                     setIsOnline(isOnline);
-                    console.log(isOnline);
             });
         }
-    }, [props.socket, props.currentChat]);
+    }, [props.socket.current,props.currentChat]);
 
     useEffect(() => {
         if (arrivalMessage) {
@@ -62,11 +62,26 @@ export default function ChatContainer(props) {
     return (
         <Container>
             <div className='chat-header'>
-                {/* Header content */}
+            <div className='left'>
+                    <div className="back">
+                        <Back onClick={props.onBack} />
+                    </div>
+                    <div className='user-details'>
+                        <div className='avatar'>
+                            <img src={props.currentChat.avatarImage} alt='avatar' />
+                        </div>
+                        <div className="user">
+                            <div className='username'>
+                                <h3>{props.currentChat.username}</h3>
+                            </div>
+                            {isOnline ? <div>Online</div> : <div>Offline</div>}
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className='chat-messages'>
                 {messages.map((message, index) => (
-                    <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`}>
+                    <div key={index} className={`message ${message.fromSelf ? 'sended' : 'recieved'}`}>
                         <div className='content'>
                             <p>{message.message}</p>
                         </div>

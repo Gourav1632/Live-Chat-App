@@ -51,16 +51,19 @@ io.on("connection", (socket) => {
 
   socket.on("add-user", (userId) => {
     onlineUsers.set(userId, socket.id);
+    const isOnline = onlineUsers.has(userId);
+    io.emit("onlineStatus", { userId, isOnline});
   });
 
   socket.on("disconnect", () => {
     for (let [key, value] of onlineUsers) {
         if (value === socket.id) {
-            onlineUsers.delete(key);
-            break;
+          onlineUsers.delete(key);
+          const isOnline = onlineUsers.has(key);
+          io.emit("onlineStatus", { key, isOnline });
+          break;
         }
     }
-    console.log("User disconnected");
 });
 
   socket.on("isOnline", (userId) => {

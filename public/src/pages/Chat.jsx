@@ -71,8 +71,6 @@ function Chat() {
   }, [socket,currentUser]);
 
 
-
-
   useEffect(() => {
     async function api() {
       if (currentUser) {
