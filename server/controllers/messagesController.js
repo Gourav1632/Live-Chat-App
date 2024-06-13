@@ -37,4 +37,5 @@ const getAllMessage = async(req,res,next)=>{
     }
 }
 
+
 export {addMessage,getAllMessage}

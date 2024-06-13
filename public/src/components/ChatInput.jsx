@@ -56,6 +56,7 @@ export default function ChatInput(props) {
   )
 }
 
+
 const Container = styled.div`
 display: grid;
 grid-template-columns: 4% 96%;
@@ -95,7 +96,6 @@ padding-bottom: 0.3rem;
     display: flex;
     align-items: center;
     gap: 2rem;
-    /* background-color: #181818; */
     input{
         color: white;
         width: 90%;
@@ -120,7 +120,7 @@ padding-bottom: 0.3rem;
         background-color: #037ADE;
         border: none;
         @media screen and (min-width: 720px) and (max-width: 1080px) {
-            padding: 0.3rem 1rem;
+            padding: 1rem 1rem;
             svg{
                 font-size: 1rem;
             }
@@ -130,6 +130,9 @@ padding-bottom: 0.3rem;
             color: white;
         }
     }
+}
+@media screen and (min-width: 360px) and (max-width: 480px) {
+    grid-template-columns: 10% 90%;
 }
 
 `;

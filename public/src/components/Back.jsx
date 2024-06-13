@@ -15,19 +15,21 @@ const Back = (props) => {
 };
 
 const BackButton = styled.button`
-  display: flex;
-  align-items: center;
-  font-size: 20px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-
-  &:hover {
-    color: #007bff; /* Change color on hover, optional */
-  }
+display: flex;
+align-items: center;
+justify-content: center;
+background: none;
+padding: 0.5rem;
+border: none;
+color: white;
+cursor: pointer;
+outline: none;
+&:hover {
+  color: #007bff;
+}
+svg{
+  font-size: 1.3rem;
+}
 `;
 
 export default Back;

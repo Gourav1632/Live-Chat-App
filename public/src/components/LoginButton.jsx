@@ -2,18 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
 
-export default function Logout(props) {
+export default function LoginButton(props) {
     const navigate = useNavigate();
     async function handleClick(){
-        if (props.socket) {
-          props.socket.current.disconnect();
-        }
-        localStorage.clear();
-        navigate("/");
+        navigate("/login");
     }
   return (
     <Button onClick={handleClick}>
-        Logout
+        Login
     </Button>
   )
 }

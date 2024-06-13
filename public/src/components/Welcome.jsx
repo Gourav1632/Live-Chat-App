@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Hello from '../assets/hello.gif';
 import Notification from '../assets/notification.svg';
-import Logout from './Logout';
 import axios from 'axios';
 import { acceptRequestRoute, getRecievedRequestsRoute, rejectRequestRoute } from '../utils/APIRoutes';
 
 function Welcome(props) {
   const [receivedRequests, setReceivedRequests] = useState([]);
-
-
 
   async function getReceivedRequests() {
     const response = await axios.get(`${getRecievedRequestsRoute}/${props.currentUser._id}`);
@@ -53,9 +49,6 @@ function Welcome(props) {
     return (
       <Container>
         <div className="welcome">
-          <div className='logout'>
-            <Logout />
-          </div>
           <img src={Notification} alt="Notification" />
           <h1>Welcome, <span>{props.currentUser.username}</span></h1>
           <h3>You're all caught up! No new notifications</h3>
@@ -66,9 +59,6 @@ function Welcome(props) {
     return (
       <Container>
         <div className="notification">
-        <div className='logout'>
-          <Logout />
-        </div>
           <h1>Notifications</h1>
             {
             receivedRequests.map((contact,index) => (
@@ -89,14 +79,17 @@ function Welcome(props) {
                 </div>
             ))
             }
+            <div style={{ paddingBottom: '4rem', height: '4rem' }}></div>
             </div>
       </Container>
     );
   }
 }
 
+
 const Container = styled.div`
-  .welcome{
+  height: 100%;
+  .welcome {
     height: 100%;
     display: flex;
     justify-content: center;
@@ -104,24 +97,18 @@ const Container = styled.div`
     flex-direction: column;
     color: white;
     gap: 1rem;
-
-    .logout {
-      position: fixed;
-      top: 2rem;
-      right: 2rem;
-      display: flex;
-      align-items: center;
-    }
-
     img {
-      height: 40rem;
+      height: 30rem;
     }
-
     span {
       color: #037ADE;
     }
+    h3 {
+      text-align: center;
+      padding: 1rem;
+    }
   }
-  .notification{
+  .notification {
     margin-top: 2rem;
     display: flex;
     justify-content: center;
@@ -136,53 +123,54 @@ const Container = styled.div`
       display: flex;
       align-items: center;
     }
-
     img {
       height: 40rem;
     }
-
     span {
       color: #037ADE;
     }
-    .contact{
+    .contact {
       display: flex;
       justify-content: space-between;
-      width: 93%;
-    .user-details{
-          min-height: 5rem;
-          width: 93%;
-          padding: 0.4rem;
+      width: 100%;
+      padding: 0rem 1rem;
+      .user-details {
+        min-height: 5rem;
+        width: 93%;
+        padding: 0.4rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        border-radius: 0.5rem;
+        .avatar {
+          height: 3rem;
+          width: 3rem;
+          overflow: hidden;
+          border-radius: 50%;
           display: flex;
-          gap: 1rem;
-          align-items: center;
-          border-radius: 0.5rem;
-          .avatar {
-              height: 3rem;
-              width: 3rem;
-              overflow: hidden;
-              border-radius: 50%;
-              img {
-              height: 3rem;
-              }
+          justify-content: center;
+          img {
+            height: 3rem;
           }
+        }
       }
-      .request{
+      .request {
         display: flex;
         gap: 1rem;
         align-items: center;
         justify-content: center;
-        .accept{
+        .accept {
           width: 6rem;
           height: 3rem;
           border-radius: 3rem;
           border: none;
-          background-color: #7FFFD4	;
+          background-color: #7FFFD4;
           font-weight: bolder;
-          &:hover{
-          background-color: #097969;
+          &:hover {
+            background-color: #097969;
           }
         }
-        .ignore{
+        .ignore {
           width: 6rem;
           height: 3rem;
           border-radius: 3rem;
@@ -190,13 +178,41 @@ const Container = styled.div`
           background-color: #646463;
           color: white;
           font-weight: bolder;
-          &:hover{
-          background-color: #3d3d3d;
+          &:hover {
+            background-color: #3d3d3d;
           }
         }
       }
-  }}
-`;
+    }
+  }
 
+  @media screen and (min-width: 720px) and (max-width: 1080px) {
+    .welcome img {
+      height: 20rem;
+    }
+    .notification .contact .request .accept {
+      width: 5rem;
+      height: 2rem;
+    }
+    .notification .contact .request .ignore {
+      width: 5rem;
+      height: 2rem;
+    }
+  }
+
+  @media screen and (min-width: 360px) and (max-width: 480px) {
+    .welcome img {
+      height: 15rem;
+    }
+    .notification .contact .request .accept {
+      width: 5rem;
+      height: 2rem;
+    }
+    .notification .contact .request .ignore {
+      width: 5rem;
+      height: 2rem;
+    }
+  }
+`;
 
 export default Welcome;

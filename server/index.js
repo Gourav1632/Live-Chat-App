@@ -7,8 +7,8 @@ import messageRoute from "./routes/messagesRoute.js";
 import {Server} from "socket.io";
 
 const app = express();
-app.use(express.json({ limit: '10mb' })); // Adjust the limit as needed
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(express.json({ limit: '100mb' })); // Adjust the limit as needed
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
 
 env.config();
@@ -53,6 +53,16 @@ io.on("connection", (socket) => {
     onlineUsers.set(userId, socket.id);
   });
 
+  socket.on("disconnect", () => {
+    for (let [key, value] of onlineUsers) {
+        if (value === socket.id) {
+            onlineUsers.delete(key);
+            break;
+        }
+    }
+    console.log("User disconnected");
+});
+
   socket.on("isOnline", (userId) => {
     const isOnline = onlineUsers.has(userId);
     socket.emit("onlineStatus", { userId, isOnline });
@@ -75,7 +85,6 @@ io.on("connection", (socket) => {
 
   socket.on("accept-request",(data)=>{
     const sendUserSocket = onlineUsers.get(data.to);
-    console.log("request accepted of ",sendUserSocket);
     if(sendUserSocket){
       socket.to(sendUserSocket).emit("request-accepted",data.from);
     }

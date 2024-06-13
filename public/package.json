@@ -11,6 +11,7 @@
     "buffer": "^6.0.3",
     "dotenv": "^16.4.5",
     "emoji-picker-react": "^4.9.3",
+    "firebase": "^10.12.2",
     "fs": "^0.0.1-security",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

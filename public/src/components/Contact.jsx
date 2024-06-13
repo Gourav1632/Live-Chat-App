@@ -1,12 +1,16 @@
 import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
-import Logo from "../assets/logo.png";
-import Search from './Search'; // Import the Search component
+import Search from './Search'; 
+import Ellipsis from './Ellipsis';
+import AvatarPopup from './AvatarPopup';
 
 function Contact(props) {
     const [currentSelected, setCurrentSelected] = useState(undefined);
     const [searchQuery, setSearchQuery] = useState('');
     const [newMessageIds,setNewMessageIds] = useState([]);
+    const [showPopup, setShowPopup] = useState(false);
+    const [popupAvatar, setPopupAvatar] = useState(null);
+    const [isCurrentUser,setIsCurrentUser] = useState(false);
 
     function changeCurrentChat(index, contact) {
         setSearchQuery('');
@@ -14,7 +18,16 @@ function Contact(props) {
         props.changeChat(contact);
         setNewMessageIds((prev) => prev.filter(id => id !== contact._id));
     }
-
+    function openPopup(avatar, e,isCurrentUser) {
+      e.stopPropagation();
+      setPopupAvatar(avatar);
+      setShowPopup(true);
+      setIsCurrentUser(isCurrentUser);
+  
+    }  
+    function closePopup() {
+      setShowPopup(false);
+    }
 
     useEffect(()=>{
       if(props.socket.current){
@@ -37,8 +50,11 @@ function Contact(props) {
         <>
             {props.currentUser.avatarImage && props.currentUser.username && (
                 <Container>
+                    <div className="ellipsis">
+                      <Ellipsis socket={props.socket} currentUser={props.currentUser._id} />
+                    </div>
                     <div className="current-user">
-                        <div className="avatar">
+                        <div className="avatar" onClick={(e) => openPopup(props.currentUser.avatarImage,e,true)}>
                             <img
                                 src={props.currentUser.avatarImage}
                                 alt="avatar"
@@ -60,7 +76,7 @@ function Contact(props) {
                         </div>
                         {filteredContacts.length === 0 ? (
                             <div className="no-friends">
-                                <p>Looks like you have no friends yet.</p>
+                                <p>Looks like there is nothing!</p>
                             </div>
                         ) : (
                             filteredContacts.map((contact, index) => (
@@ -69,7 +85,7 @@ function Contact(props) {
                                     className={`contact ${index === currentSelected ? "selected" : ""}`}
                                     onClick={() => changeCurrentChat(index, contact)}
                                 >
-                                    <div className="avatar">
+                                    <div className="avatar" onClick={(e) => openPopup(contact.avatarImage,e,false)}>
                                         <img
                                             src={contact.avatarImage}
                                             alt="avatar"
@@ -84,7 +100,9 @@ function Contact(props) {
                                 </div>
                             ))
                         )}
+                        <div style={{ paddingBottom: '4rem', height: '4rem' }}></div>
                     </div>
+                    {showPopup && <AvatarPopup isCurrentUser={isCurrentUser} avatarImage={popupAvatar} onClose={closePopup} onChangeProfile={props.onChangeProfile} />}
                 </Container>
             )}
         </>
@@ -94,11 +112,16 @@ function Contact(props) {
 const Container = styled.div`
   color: white;
   display: grid;
-  grid-template-rows: 15% 5% 80%;  
+  grid-template-rows: 15% 5% 80%;
   background-color: #181818;
   overflow: hidden;
+  position: relative;
   gap: 1rem;
-  border-right: 1px solid #686D76;
+  .ellipsis{
+    position: absolute;
+    top: 1rem;
+    right: 0.8rem;
+  }
   .current-user {
     display: flex;
     overflow: visible;
@@ -111,12 +134,14 @@ const Container = styled.div`
       width: 4rem;
       overflow: hidden;
       border-radius: 50%;
+      display: flex;
+      justify-content: center;
       img {
         height: 4rem;
       }
     }
-    .add-friend{
-      button{
+    .add-friend {
+      button {
         width: 6rem;
         height: 2rem;
         border-radius: 3rem;
@@ -124,8 +149,8 @@ const Container = styled.div`
         background-color: #ffdf00;
         color: black;
         font-weight: bolder;
-        &:hover{
-        background-color: #9e8c1a;
+        &:hover {
+          background-color: #9e8c1a;
         }
       }
     }
@@ -138,7 +163,7 @@ const Container = styled.div`
       }
     }
   }
-  .search{
+  .search {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,7 +183,7 @@ const Container = styled.div`
         border-radius: 1rem;
       }
     }
-    .chat-heading{
+    .chat-heading {
       width: 93%;
       text-align: left;
       font-size: 1.5rem;
@@ -174,7 +199,7 @@ const Container = styled.div`
       gap: 1rem;
       align-items: center;
       border-radius: 0.5rem;
-      &:hover{
+      &:hover {
         background-color: #ffffff43;
       }
       .avatar {
@@ -182,17 +207,19 @@ const Container = styled.div`
         width: 3rem;
         overflow: hidden;
         border-radius: 50%;
+        display: flex;
+        justify-content: center;
         img {
           height: 3rem;
         }
       }
-      .username{
+      .username {
         display: flex;
         flex-direction: column;
       }
     }
     .selected {
-      background-color:  #037ADE;
+      background-color: #037ade;
     }
   }
   .no-friends {
