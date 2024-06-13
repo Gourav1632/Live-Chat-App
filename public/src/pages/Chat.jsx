@@ -7,8 +7,6 @@ import Contact from '../components/Contact';
 import Welcome from '../components/Welcome';
 import ChatContainer from '../components/ChatContainer';
 import { io } from "socket.io-client";
-import Logo from "../assets/logo.png";
-import Background from "../assets/background.jpg";
 import Search from '../components/Search';
 import AddFriends from '../components/AddFriends';
 import Notification from '../components/Notification';

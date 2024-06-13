@@ -40,9 +40,11 @@ export default function SetAvatar() {
     setIsLoading(true);
     const user = JSON.parse(localStorage.getItem("chat-app-user"));
     const img = ref(imgDB, `emberProfiles/${v4()}`);
+  
     try {
       const data = await uploadBytes(img, customAvatar);
       const val = await getDownloadURL(data.ref);
+      console.log(val);
       setProfileURL(val);
       if (val) {
         const response = await axios.post(`${setAvatarRoute}/${user._id}`, { image: val });
