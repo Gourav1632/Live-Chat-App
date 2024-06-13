@@ -3,10 +3,6 @@ import axios from "axios";
 import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/chat.png"
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { loginRoute } from "../utils/APIRoutes";
-import LoginImg from "../assets/Login.svg";
 
 export default function Login() {
   const navigate = useNavigate();
