@@ -7,7 +7,7 @@ import messageRoute from "./routes/messagesRoute.js";
 import {Server} from "socket.io";
 
 const app = express();
-app.use(express.json({ limit: '100mb' })); // Adjust the limit as needed
+app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
 
@@ -39,7 +39,7 @@ const server = app.listen(process.env.PORT,()=>{
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", 
+    origin: process.env.origin, 
     credentials: true,
   },
 });
