@@ -4,7 +4,9 @@ import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/chat.png";
 import LoginImg from "../assets/Login.svg"
-
+import { ToastContainer, toast } from "react-toastify";
+import { registerRoute } from "../utils/APIRoutes";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const navigate = useNavigate();
