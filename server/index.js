@@ -39,7 +39,7 @@ const server = app.listen(process.env.PORT,()=>{
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.origin, 
+    origin: process.env.ORIGIN, 
     credentials: true,
   },
 });

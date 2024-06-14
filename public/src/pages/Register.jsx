@@ -7,8 +7,10 @@ import LoginImg from "../assets/Login.svg"
 import { ToastContainer, toast } from "react-toastify";
 import { registerRoute } from "../utils/APIRoutes";
 import "react-toastify/dist/ReactToastify.css";
+import { host } from "../utils/APIRoutes";
 
 export default function Register() {
+  console.log(host);
   const navigate = useNavigate();
   const toastOptions = {
     position: "bottom-right",
