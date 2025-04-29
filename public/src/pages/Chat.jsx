@@ -46,6 +46,10 @@ function Chat() {
     }
     getCurrentUser();
   }, []);
+  
+  useEffect(() => {
+    console.log(currentUserImage);  // This will now log after the state is updated
+  }, [currentUserImage]);
 
   useEffect(() => {
     if (currentUser) {

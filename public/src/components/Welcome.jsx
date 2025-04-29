@@ -150,7 +150,9 @@ const Container = styled.div`
           display: flex;
           justify-content: center;
           img {
-            height: 3rem;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
           }
         }
       }

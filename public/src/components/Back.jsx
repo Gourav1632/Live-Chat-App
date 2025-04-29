@@ -1,7 +1,6 @@
 import React from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import styled from 'styled-components';
-import {useNavigate} from "react-router-dom";
 
 
 

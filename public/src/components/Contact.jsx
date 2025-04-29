@@ -138,6 +138,8 @@ const Container = styled.div`
       justify-content: center;
       img {
         height: 4rem;
+        width: 100%;
+        object-fit: cover;
       }
     }
     .add-friend {
@@ -211,6 +213,8 @@ const Container = styled.div`
         justify-content: center;
         img {
           height: 3rem;
+          width: 100%;
+        object-fit: cover;
         }
       }
       .username {

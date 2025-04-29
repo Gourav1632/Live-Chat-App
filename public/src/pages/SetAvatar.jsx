@@ -14,6 +14,7 @@ import { v4 } from "uuid";
 
 
 export default function SetAvatar() {
+
   const navigate = useNavigate();
   const inputRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -42,8 +43,14 @@ export default function SetAvatar() {
     const img = ref(imgDB, `emberProfiles/${v4()}`);
 
     try {
-      const data = await uploadBytes(img, customAvatar);
-      const val = await getDownloadURL(data.ref);
+      let data;
+      let val;
+      if(isCustomSelected && customAvatar){
+          data = await uploadBytes(img, customAvatar);
+          val = await getDownloadURL(data.ref);
+      }else{
+        val = "https://firebasestorage.googleapis.com/v0/b/ember-chat-app-fbd3f.appspot.com/o/emberProfiles%2F0ba69dbc-7df2-4021-86be-53238d563662?alt=media&token=88a9cbb2-4366-4c80-81c7-488ae3c4c609"
+      }
       setProfileURL(val);
       if (val) {
         const response = await axios.post(`${setAvatarRoute}/${user._id}`, { image: val });

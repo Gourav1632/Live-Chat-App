@@ -33,8 +33,8 @@ const connectDB = async () => {
   }
 
 connectDB();
-const server = app.listen(process.env.PORT,()=>{
-    console.log(`Server running on port: ${process.env.PORT}`);
+const server = app.listen(process.env.PORT || 5000,()=>{
+    console.log(`Server running on port: ${process.env.PORT || 5000}`);
 })
 
 const io = new Server(server, {

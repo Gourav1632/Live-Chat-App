@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { host } from "../utils/APIRoutes";
 
 export default function Register() {
-  console.log(host);
   const navigate = useNavigate();
   const toastOptions = {
     position: "bottom-right",
@@ -73,6 +72,7 @@ export default function Register() {
         username,
         email,
         password,
+        avatarImage : "https://firebasestorage.googleapis.com/v0/b/ember-chat-app-fbd3f.appspot.com/o/emberProfiles%2F0ba69dbc-7df2-4021-86be-53238d563662?alt=media&token=88a9cbb2-4366-4c80-81c7-488ae3c4c609" // default image
       });
 
       if (data.status === false) {

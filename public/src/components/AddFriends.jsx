@@ -122,9 +122,9 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        overflow: auto;
+        overflow-y: auto;
         gap: 0.1rem;
+        height: 90vh;
 
         &::-webkit-scrollbar {
             width: 0.2rem;
@@ -170,7 +170,9 @@ const Container = styled.div`
                     justify-content: center;
 
                     img {
-                        height: 3rem;
+                        height: 100%;
+                        width: 100%;
+                        object-fit: cover;
                     }
                 }
             }

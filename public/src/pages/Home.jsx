@@ -1,10 +1,11 @@
 import React,{useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import LoginButton from '../components/LoginButton';
 import RegisterButton from '../components/RegisterButton';
 import Logo from "../assets/chat.png"
 import ChatImg from '../assets/chat.svg'
+import TryGuestButton from '../components/TryGuest';
 
 
 function Home() {
@@ -32,6 +33,9 @@ function Home() {
       <div className="buttons">
         <LoginButton onClick={onclick} />
         <RegisterButton onClick={onclick} />
+      </div>
+      <div className='buttons'>
+        <TryGuestButton onclick={onclick} />
       </div>
       </div>
       <div className="right">

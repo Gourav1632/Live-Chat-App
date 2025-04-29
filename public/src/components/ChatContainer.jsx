@@ -127,6 +127,8 @@ const Container = styled.div`
                 justify-content: center;
                 img {
                     height: 2.5rem;
+                    width: 100%;
+                    object-fit: cover;
                 }
             }
             .user{
