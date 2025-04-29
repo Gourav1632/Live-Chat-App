@@ -80,6 +80,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-request", (data) => {
+    console.log("Request sent... ")
     const sendUserSocket = onlineUsers.get(data.to);
     if (sendUserSocket) {
       socket.to(sendUserSocket).emit("recieve-request", data.from);
@@ -87,6 +88,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("accept-request",(data)=>{
+    console.log("Request accepted ...")
     const sendUserSocket = onlineUsers.get(data.to);
     if(sendUserSocket){
       socket.to(sendUserSocket).emit("request-accepted",data.from);

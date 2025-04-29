@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BiNotification } from 'react-icons/bi';
 import { AiOutlineBell } from 'react-icons/ai';
 
 export default function Notification(props) {

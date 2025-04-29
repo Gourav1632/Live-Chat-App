@@ -7,12 +7,9 @@ import Contact from '../components/Contact';
 import Welcome from '../components/Welcome';
 import ChatContainer from '../components/ChatContainer';
 import { io } from "socket.io-client";
-import Search from '../components/Search';
 import AddFriends from '../components/AddFriends';
 import Notification from '../components/Notification';
-import Logout from '../components/Logout';
 import Back from '../components/Back';
-import Ellipsis from '../components/Ellipsis';
 
 function Chat() {
 
@@ -46,7 +43,7 @@ function Chat() {
     }
     getCurrentUser();
   }, []);
-  
+
   useEffect(() => {
     console.log(currentUserImage);  // This will now log after the state is updated
   }, [currentUserImage]);
