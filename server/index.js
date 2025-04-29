@@ -50,12 +50,14 @@ io.on("connection", (socket) => {
   global.chatSocket = socket;
 
   socket.on("add-user", (userId) => {
+    console.log("new user connected ...")
     onlineUsers.set(userId, socket.id);
     const isOnline = onlineUsers.has(userId);
     io.emit("onlineStatus", { userId, isOnline});
   });
 
   socket.on("disconnect", () => {
+    console.log("user disconnected ...")
     for (let [key, value] of onlineUsers) {
         if (value === socket.id) {
           onlineUsers.delete(key);
